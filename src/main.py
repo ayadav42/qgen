@@ -9,7 +9,7 @@ properties = {
 }
 
 # def getQuestionsAndAnswer():
-onto = get_ontology("file://resources/qgen.owl").load()
+onto = get_ontology("../resources/qgen.owl").load()
 
 with onto:
     class Person(Thing): pass
