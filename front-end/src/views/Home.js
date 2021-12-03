@@ -31,49 +31,61 @@ export default function Home(props) {
   }, []);
 
   const handleCreate = () => {
-    // axios({
-    //   url: "http://semanticWeb531.com/rest/quiz/create",
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
+    // fetch("http://ec2-18-216-48-48.us-east-2.compute.amazonaws.com:8000/",{
+    //   headers:{
+    //     "Content-Type":"application/json",
     //   },
-    //   data: {
-    //     text: text,
-    //   },
+    //   body:JSON.stringify(text),
+    //   method:"POST"
+    // }).then((res)=>res.json()).then(res=>{
+    //   console.log(res);
     // })
-    //   .then((res) => res.data)
-    //   .then((res) => {
-    //     dispatch(
-    //       setQuestions({
-    //         questions: res.questions,
-    //         isLoading:false
-    //       })
-    //     );
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
 
-    dispatch(
-      setQuestions({
-        questions: [
-          {
-            id: 1,
-            difficulty: 1,
-            type: "boolean",
-            body: "Is Tammy mother of Sam?",
-            answer: ["Yes", "Yeah"],
-          },
-          {
-            id: 2,
-            difficulty: 2,
-            type: "one_word",
-            body: "Who is the mother of Sam?",
-            answer: ["Tammy","Betty","Mommy"],
-          },
-        ],
+    axios({
+      url: "http://ec2-18-216-48-48.us-east-2.compute.amazonaws.com:8000/",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        text: text.t,
+      }
+    })
+      .then((res) => res.data)
+      .then((res) => {
+        console.log(res);
+        dispatch(
+          setQuestions({
+            questions: res.questions,
+            isLoading:false
+          })
+        );
       })
-    );
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // dispatch(
+    //   setQuestions({
+    //     questions: [
+    //       {
+    //         id: 1,
+    //         difficulty: 1,
+    //         type: "boolean",
+    //         body: "Is Tammy mother of Sam?",
+    //         answer: ["Yes", "Yeah"],
+    //       },
+    //       {
+    //         id: 2,
+    //         difficulty: 2,
+    //         type: "one_word",
+    //         body: "Who is the mother of Sam?",
+    //         answer: ["Tammy","Betty","Mommy"],
+    //       },
+    //     ],
+    //     isLoading: false
+    //   })
+    // );
     navigate("/question");
   };
 
