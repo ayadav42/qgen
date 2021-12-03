@@ -9,15 +9,17 @@ properties = {
 }
 
 # def getQuestionsAndAnswer():
-onto = get_ontology("../resources/qgen.owl").load()
+onto = get_ontology("/Users/amaryadav/PycharmProjects/Qgen/resources/qgen.owl").load()
 
 with onto:
-    class Person(Thing): pass
+    class Person(Thing):
+        pass
+
 
     def getPerson(name):
         ans = None
         for person in onto.get_instances_of(Person):
-        # for person in onto.get_instances_of(onto.Person):
+            # for person in onto.get_instances_of(onto.Person):
             if (person._name).lower() == name.lower():
                 ans = person
                 break
@@ -29,11 +31,6 @@ with onto:
         return ans
 
 
-    # for rule in rules.rules:
-    #     print(rule)
-    #     ruleImp = Imp()
-    #     ruleImp.set_as_rule(rule)
-
     ontoPropertyLabels = {}
     # for prop in list(onto.properties()):
     #     print(helper.camel_case_split(prop._name), type (prop))
@@ -41,7 +38,7 @@ with onto:
 
     # text2 = "Sam is the father of Tom. Tara is the wife of Sam."
     # text = "Sam is the father of Tom. Tara is the wife of Sam. Sarah is the sister of Tom."
-    text = "Sam is the son of Tom. Tom is the parent of Carl."
+    text = "Sam is the son of Tom. Tom is the parent of Carl. Kevin is the brother of Carl."
 
     filteredTriples = []
 
@@ -50,8 +47,9 @@ with onto:
         for triple in client.annotate(text):
             print(triple, type(triple))
 
-            relationCamelCase = helper.camel_case_join(triple['relation'].split(" "))
-            prop = helper.closest_relation(relationCamelCase, onto)
+            # relationCamelCase = helper.camel_case_join(triple['relation'].split(" "))
+            # prop = helper.closest_relation(relationCamelCase, onto)
+            prop = helper.closest_relation(triple['relation'], onto)
 
             if prop is not None:
                 triple['subject'] = getPerson(triple['subject'])
@@ -59,25 +57,20 @@ with onto:
                 triple['object'] = getPerson(triple['object'])
                 filteredTriples.append(triple)
 
-    print("----------------")
+    print("--------------------------------------------")
 
     for triple in filteredTriples:
         s = triple['subject']
         p = triple['relation']
         o = triple['object']
-        # print(s, type(s))
         print(p, type(p), p._name)
         name = p._name
+        # objs = s.__getattribute__(p._name)
+        # if objs is not None:
+        #     objs.append(o)
+        #     s.__setattr__(p._name, objs)
+        # else:
         s.__setattr__(p._name, [o])
-        # s[p._name].append(o)
-        # print(o, type(o))
-        # print(s.storid, triple, o.storid)
-        # print(s.namespace.world._props.get(p.storid))
-        # s.__setattr__(p.storid, o)
-        # s[p._name] = o
-        # obj = Person(s._name, namespace=onto, p=[o])
-        # print("here", obj, type (obj))
-        # triple['subject'].[triple['relation']] = triple['object']
 
 # for s, p, o in onto.get_triples():
 #     x = default_world._entities.get(s)
@@ -86,11 +79,10 @@ with onto:
 
 
 sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
-# print("a2 gender: ", a2.gender)
-print(list(default_world.sparql("SELECT ?x WHERE{ ?x <http://www.semanticweb.org/qgen/ontologies/relationships#gender> 'female'.}")))
+
+print(list(default_world.sparql(
+    "SELECT ?x WHERE{ ?x <http://www.semanticweb.org/qgen/ontologies/relationships#gender> 'female'.}")))
 infer = get_ontology("http://inferrences/")
-# print("ontoTestRule_2: \n ------------------------------------------------------")
-# print("t:",infer.get_triples())
 
 inferredTriples1 = set()
 
@@ -114,8 +106,11 @@ for triple in inferredTriples1:
 with onto:
     class Person(Thing):
         pass
+
+
     class different_people(Person >> Person):
         equivalent_to = []
+
 
     for rule in rules.rules:
         print(rule)
@@ -131,17 +126,18 @@ for s, p, o in infer.get_triples():
     x = default_world._entities.get(s)
     y = default_world._entities.get(p)
     z = default_world._entities.get(o)
-    if(not x or not y or not z):
+    if (not x or not y or not z):
         print("sub:", x, " pred:", y, " obj: ", o)
     else:
         if x is not z:
             inferredTriples2.add((x, y, z))
-        # print("sub:", x, " pred:", y, " obj: ", z)
 
 print("inferredTriples2-------------------------------------------------------")
 
 for triple in inferredTriples2 - inferredTriples1:
     print(triple)
+
+print("questions/asnwers-------------------------------------------------------")
 
 # f1 = open("file1.txt", "w")
 # f1.write(inferredTriples1)
@@ -151,10 +147,39 @@ for triple in inferredTriples2 - inferredTriples1:
 # f2.write(inferredTriples2)
 # f2.close()
 
+def getAnswers(triplet):
+    pred = triplet[1]
+    pred = pred.namespace.base_iri + pred._name
 
+    obj = triplet[2]
+    obj = obj.namespace.base_iri + obj._name
 
+    query = "SELECT ?x WHERE{ ?x <%s> <%s>. FILTER (?x != <%s>)}" % (pred, obj, obj)
 
+    print("query", query)
 
+    answers = list(
+        default_world.sparql(
+            query
+        )
+    )
+    print(answers)
+
+for triple in inferredTriples2 - inferredTriples1:
+    getAnswers(triple)
+
+'''
+(qgen.Carl, qgen.hasRelative, qgen.Sam)
+(qgen.Carl, qgen.isSiblingOf, qgen.Sam)
+(qgen.Carl, qgen.hasBrother, qgen.Sam)
+(qgen.Sam, qgen.isBrotherOf, qgen.Carl)
+(qgen.Sam, qgen.hasSibling, qgen.Carl)
+(qgen.Sam, qgen.isSiblingOf, qgen.Carl)
+(qgen.Sam, qgen.hasRelationship, qgen.Carl)
+(qgen.Carl, qgen.hasRelationship, qgen.Sam)
+(qgen.Sam, qgen.hasRelative, qgen.Carl)
+(qgen.Carl, qgen.hasSibling, qgen.Sam)
+'''
 # amar = onto.Person("Amar")
 # aman = onto.Person("Aman")
 # amar.hasBrother = aman

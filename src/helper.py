@@ -17,17 +17,18 @@ def similar(a, b):
 
 
 def closest_relation(relation, onto):
+    relationCamelCase = camel_case_join(relation.split(" "))
+
     ans = None
     maxScore = 0
 
-    # print(helper.camel_case_split(prop._name), type(prop))
     for prop in list(onto.properties()):
-        score = similar(relation, prop._name)
+        score = similar(relationCamelCase, prop._name)
         if score > maxScore:
             maxScore = score
             ans = prop
 
-    print(relation, ans, maxScore)
+    print(relationCamelCase, ans, maxScore)
 
     if maxScore < 0.8:
         return None
