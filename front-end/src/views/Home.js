@@ -31,27 +31,27 @@ export default function Home(props) {
 
   const handleCreate = () => {
     console.log(text);
-    axios({
-      url: "http://semanticWeb531.com/rest/quiz/create",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: {
-        text: text,
-      },
-    })
-      .then((res) => res.data)
-      .then((res) => {
-        dispatch(
-          setQuestions({
-            questions: res,
-          })
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // axios({
+    //   url: "http://semanticWeb531.com/rest/quiz/create",
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   data: {
+    //     text: text,
+    //   },
+    // })
+    //   .then((res) => res.data)
+    //   .then((res) => {
+    //     dispatch(
+    //       setQuestions({
+    //         questions: res,
+    //       })
+    //     );
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
 
     dispatch(
       setQuestions({
@@ -61,14 +61,14 @@ export default function Home(props) {
             difficulty: 1,
             type: "boolean",
             body: "Is Tammy mother of Sam?",
-            answer: "Yes",
+            answer: ["Yes", "Yeah"],
           },
           {
             id: 2,
             difficulty: 2,
             type: "one_word",
             body: "Who is the mother of Sam?",
-            answer: "Tammy",
+            answer: ["Tammy","Betty","Mommy"],
           },
         ],
       })

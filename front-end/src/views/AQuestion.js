@@ -13,7 +13,7 @@ import GetAnswer from "../utils/GetAnswer";
 export default function AQuestion(props) {
   const dispatch = useDispatch();
   const questions = GetQuestions();
-  const [correct, setCorrect] = useState("false");
+  const [correct, setCorrect] = useState({value:false,isLoading:false});
   const handleChange = (e, id) => {
      dispatch(
       upDateQuesitons({
@@ -22,8 +22,22 @@ export default function AQuestion(props) {
         answer: props.answer
       })
     );
-    const res =String(e.target.value.toLowerCase() === props.answer.toLowerCase());
-    setCorrect(res);
+    let isCorrect = false;
+    props.answer.forEach(ans => {
+            if(ans.toLowerCase()===e.target.value.toLowerCase()){
+              isCorrect = true;
+              console.log(isCorrect);
+            }
+          });
+    console.log("isCorrect:");
+    console.log(isCorrect);
+    const newCorrect = {};
+    newCorrect.value = isCorrect;
+    console.log(newCorrect.value);
+    newCorrect.isLoading = !newCorrect.isLoading;
+    setCorrect(newCorrect);
+    console.log("correct:");
+    console.log(correct);
   };
 
   return (
@@ -51,15 +65,15 @@ export default function AQuestion(props) {
               />
             </Grid>
             <Grid item xs={4} display="flex" justifyContent="flex-start">
-              { questions.showAnswer === "true" && correct === "true" &&
+              { questions.showAnswer === "true" && correct.value &&
                 <img  src="check.jpeg" alt="" height="60" />
               }
-              { questions.showAnswer === "true" && correct === "false" &&
+              { questions.showAnswer === "true" && !correct.value &&
                 <img src="cross.jpeg" alt="" height="60" />
               }
             </Grid>
             {questions.showAnswer === "true" && (
-              <div style={{width:"100%",display:"flex",justifyContent:"center",color:"green"}}>Correct Answer: {props.answer}</div>
+              <div style={{width:"100%",display:"flex",justifyContent:"center",color:"green"}}>Correct Answer: {props.answer.join(" ")}</div>
             )}
           </Grid>
         </div>

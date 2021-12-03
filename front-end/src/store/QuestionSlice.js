@@ -24,15 +24,19 @@ const questionSlice = createSlice({
       if (action.payload.showAnswer === "true") {
         state.showAnswer = "true";
         state.questions.forEach((ele) => {
-          if (ele.userAnswer !== undefined) {
-            const res = String(
-              ele.userAnswer.toLowerCase() === ele.answer.toLowerCase()
-            );
-            console.log(res);
-            if (res === "true") {
-              state.totalPoints = state.totalPoints + 1;
-            }
-            console.log(state.totalPoints);
+          // if (ele.userAnswer !== undefined) {
+          //   const res = String(
+          //     ele.userAnswer.toLowerCase() === ele.answer.toLowerCase()
+          //   );
+          //   console.log(res);
+          //   if (res === "true") {
+          //     state.totalPoints = state.totalPoints + 1;
+          //   }
+          //   console.log(state.totalPoints);
+          // }
+          console.log(ele.isCorrect);
+          if(ele.isCorrect){
+            state.totalPoints = state.totalPoints + 1;
           }
         });
         return state;
@@ -41,6 +45,13 @@ const questionSlice = createSlice({
       state.questions.forEach((e) => {
         if (e.id === targetId) {
           e.userAnswer = action.payload.userAnswer;
+          let isCorrect = false;
+          e.answer.forEach(ans => {
+            if(ans.toLowerCase()===e.userAnswer.toLowerCase()){
+              isCorrect = true;
+            }
+          });
+          e.isCorrect = isCorrect;
         }
       });
       return state;
