@@ -52,6 +52,8 @@ export default function Home(props) {
         );
       })
       .catch((error) => {
+        alert("Opps! There's something wrong in your text or the backend.")
+        navigate("/")
         console.log(error);
       });
 
