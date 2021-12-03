@@ -16,7 +16,7 @@ const questionSlice = createSlice({
       state.questions = questionList;
       state.showAnswer = "false";
       state.totalPoints = 0;
-      state.isLoading = false;
+      state.isLoading = action.payload.isLoading;
       return state;
     },
     upDateQuesitons: (state, action) => {
