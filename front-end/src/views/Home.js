@@ -31,16 +31,6 @@ export default function Home(props) {
   }, []);
 
   const handleCreate = () => {
-    // fetch("http://ec2-18-216-48-48.us-east-2.compute.amazonaws.com:8000/",{
-    //   headers:{
-    //     "Content-Type":"application/json",
-    //   },
-    //   body:JSON.stringify(text),
-    //   method:"POST"
-    // }).then((res)=>res.json()).then(res=>{
-    //   console.log(res);
-    // })
-
     axios({
       url: "http://ec2-18-216-48-48.us-east-2.compute.amazonaws.com:8000/",
       method: "POST",
