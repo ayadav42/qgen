@@ -25,12 +25,12 @@ export default function Home(props) {
         questions: [],
         showAnswer: "false",
         totalPoints: 0,
+        isLoading : true
       })
     );
   }, []);
 
   const handleCreate = () => {
-    console.log(text);
     // axios({
     //   url: "http://semanticWeb531.com/rest/quiz/create",
     //   method: "POST",
@@ -45,7 +45,8 @@ export default function Home(props) {
     //   .then((res) => {
     //     dispatch(
     //       setQuestions({
-    //         questions: res,
+    //         questions: res.questions,
+    //         isLoading:false
     //       })
     //     );
     //   })

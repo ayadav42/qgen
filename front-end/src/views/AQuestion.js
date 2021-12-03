@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import "../App.css";
 import { upDateQuesitons } from "../store/QuestionSlice";
 import GetQuestions from "../utils/GetQuestions";
-import GetAnswer from "../utils/GetAnswer";
 
 export default function AQuestion(props) {
   const dispatch = useDispatch();

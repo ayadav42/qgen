@@ -12,6 +12,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useNavigate } from "react-router-dom";
+import BlockRotateLoading from "../components/BlockRotateLoading";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -36,6 +37,14 @@ export default function Questions(props) {
     );
     setOpen(true);
   };
+
+  console.log(questions);
+  console.log(questions);
+
+  if(questions.isLoading){
+    return <BlockRotateLoading></BlockRotateLoading>
+  }
+
   return (
     <div className="parent">
       {questions.questions.map((row) => (

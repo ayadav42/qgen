@@ -4,6 +4,7 @@ const initialState = {
   questions: [],
   showAnswer: "false",
   totalPoints: 0,
+  isLoading:true
 };
 
 const questionSlice = createSlice({
@@ -12,12 +13,10 @@ const questionSlice = createSlice({
   reducers: {
     setQuestions: (state, action) => {
       const questionList = action.payload.questions;
-      questionList.forEach((e) => {
-        // console.log(e);
-      });
       state.questions = questionList;
       state.showAnswer = "false";
       state.totalPoints = 0;
+      state.isLoading = false;
       return state;
     },
     upDateQuesitons: (state, action) => {
