@@ -38,9 +38,6 @@ export default function Questions(props) {
     setOpen(true);
   };
 
-  console.log(questions);
-  console.log(questions);
-
   if(questions.isLoading){
     return <BlockRotateLoading></BlockRotateLoading>
   }
@@ -85,7 +82,7 @@ export default function Questions(props) {
         <DialogContent sx={{ display: "flex" }}>
           <DialogContentText
             id="alert-dialog-slide-description"
-            sx={{ textAlign: "center", alignItems: "center", display: "flex" }}
+            sx={{ textAlign: "center"}}
           >
             {questions.totalPoints}
           </DialogContentText>

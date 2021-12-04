@@ -32,7 +32,7 @@ export default function Home(props) {
 
   const handleCreate = () => {
     axios({
-      url: "http://ec2-18-216-48-48.us-east-2.compute.amazonaws.com:8000/",
+      url: "http://ec2-18-191-36-36.us-east-2.compute.amazonaws.com:8000/",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,6 @@ export default function Home(props) {
     })
       .then((res) => res.data)
       .then((res) => {
-        console.log(res);
         dispatch(
           setQuestions({
             questions: res.questions,
